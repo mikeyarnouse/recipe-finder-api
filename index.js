@@ -5,16 +5,19 @@ const fs = require("fs");
 const app = express();
 const port = 8080;
 
+const API_KEY = "&apiKey=1dd66b091ffd463f8a2222242ddfdaa0"
+const initialIngredients = "apples,+flour,+sugar"
+
 app.use(express.json());
 
 app.get("/recipes", async (req, res) => {
-  console.log("'/test' call");
   try {
     const response = await axios.get(
-      "https://api.neoscan.io/api/main_net/v1/get_all_nodes"
+      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${initialIngredients}&number=2${API_KEY}`
     );
-    console.log(response);
-    res.send(response.data);
+    fs.writeFileSync("./data/recipes.json", JSON.stringify(response.data))
+    let recipes = JSON.parse(fs.readFileSync("./data/recipes.json"))
+    res.json(recipes);
   } catch (error) {
     console.error(error);
   }
