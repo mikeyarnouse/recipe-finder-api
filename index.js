@@ -1,22 +1,28 @@
 const express = require("express");
 const axios = require("axios");
 const fs = require("fs");
+const cors = require("cors");
 
 const app = express();
 const port = 8080;
 
-const API_KEY = "&apiKey=1dd66b091ffd463f8a2222242ddfdaa0"
-const initialIngredients = "apples,+flour,+sugar"
+app.use(cors());
+
+const API_KEY = "&apiKey=1dd66b091ffd463f8a2222242ddfdaa0";
+const initialIngredients = "apples,+flour,+sugar";
 
 app.use(express.json());
 
-app.get("/recipes", async (req, res) => {
+app.post("/recipes", async (req, res) => {
+  console.log(req.body);
+  let ingredients = req.body.ingredients;
+  let number = req.body.number;
   try {
     const response = await axios.get(
-      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${initialIngredients}&number=2${API_KEY}`
+      `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=${number}${API_KEY}`
     );
-    fs.writeFileSync("./data/recipes.json", JSON.stringify(response.data))
-    let recipes = JSON.parse(fs.readFileSync("./data/recipes.json"))
+    fs.writeFileSync("./data/recipes.json", JSON.stringify(response.data));
+    let recipes = JSON.parse(fs.readFileSync("./data/recipes.json"));
     res.json(recipes);
   } catch (error) {
     console.error(error);
