@@ -8,7 +8,8 @@ const port = 8080;
 
 app.use(cors());
 
-const API_KEY = "&apiKey=1dd66b091ffd463f8a2222242ddfdaa0";
+// const API_KEY = "&apiKey=1dd66b091ffd463f8a2222242ddfdaa0";
+const API_KEY = "&apiKey=97bc6ca86f7b40f1a2efd6b703873ee1";
 const initialIngredients = "apples,+flour,+sugar";
 
 app.use(express.json());
